@@ -26,6 +26,10 @@ Here are the steps to run the code:
 * Step 4 : The result will be in the "./result.csv"
 * All the "step" could complete by main.py
 
+## Note
+This project is revised from [sota-music-tagging-models](https://github.com/minzwon/sota-music-tagging-models)
+Many thanks for all authors of the paper ("Evaluation of CNN-based Automatic Music Tagging Models", SMC 2020)
+
 ## License
 <pre><code>
 MIT License
