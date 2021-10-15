@@ -51,4 +51,4 @@ SOFTWARE.
 </code></pre>
 
 ## Contact
-Please feel free to contact [Wei-Han Hsu]<https://github.com/ddman1101> if you have any questions.
+Please feel free to contact [Wei-Han Hsu](https://github.com/ddman1101) if you have any questions.
