@@ -12,11 +12,13 @@ This program can classify the EDM (Electronic Dance Music) subgenre.
 ## Usage
 
 You could run
-  pip3 install -r requirements.txt
+  <pre><code>pip3 install -r requirements.txt
+</code></pre>
 first to establish the enviroments.
 
 Then run
-  python3 main.py
+  <pre><code>python3 main.py
+  </code></pre>
 could predict the song's genre directly.
 
 * Step 1 : Preparing the audio (mp3, wav) and put it under "./data/audio/"
