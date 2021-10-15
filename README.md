@@ -1,5 +1,5 @@
 # EDM-subgenre-classifier
-This repository contains the code for "Deep Learning Based EDM Subgenre Classification using Mel-Spectrogram and Tempogram Features" Wei-Han Hsu, Bo-Yu Chen, Yi-Hsuan Yang
+
 
 ## Prerequisites
 
