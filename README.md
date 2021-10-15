@@ -19,6 +19,7 @@ Then run
   <pre><code>python3 main.py</code></pre>
 could predict the song's genre directly.
 
+Here are the steps to run the code:
 * Step 1 : Preparing the audio (mp3, wav) and put it under "./data/audio/"
 * Step 2 : Extracting the feature, and the feature will under the ./data/{feature_folder}" (feature_folder : mel-spectrogram, fourier-tempogram and auto-tempogram)
 * Step 3 : Classifying the audio by feature
