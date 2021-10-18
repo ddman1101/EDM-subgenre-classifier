@@ -29,7 +29,7 @@ Here are the steps to run the code:
 We only put the "late-fusion model" in this repo.
 
 ## Note
-This project is revised from [sota-music-tagging-models](https://github.com/minzwon/sota-music-tagging-models).
+This project  revised from [sota-music-tagging-models](https://github.com/minzwon/sota-music-tagging-models).
 Many thanks for all authors of the paper ("Evaluation of CNN-based Automatic Music Tagging Models", SMC 2020)
 
 ## License
