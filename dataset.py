@@ -15,23 +15,11 @@ import librosa
 import warnings
 warnings.filterwarnings("ignore")
 
-class ConcatDataset(torch.utils.data.Dataset):
-    def __init__(self, *datasets):
-        self.datasets = datasets
-
-    def __getitem__(self, i):
-        return tuple(d[i] for d in self.datasets)
-                     
-    def __len__(self):
-        return min(len(d) for d in self.datasets)
-
 ##### INPUT DATA PREPROCESSING #####
 
-def joint_late_fusion_data():
-    """
-    There has 3 dataset in here : 1. Autocorrelation-tempogram ==> 
-    """
-    genre_list = os.listdir("./tempogram/")
+def joint_data(data_type = 0, dataset_ratio = 0.1):
+
+    genre_list = os.listdir("./data/tempogram/")
     edm_melspec_1 = []
     edm_melspec_2 = []
     edm_melspec_3 = []
@@ -45,25 +33,25 @@ def joint_late_fusion_data():
         locals()['temp_dir_'+f'{genre}'+'t'] = []
         locals()['temp_dir_'+f'{genre}'+'f'] = []
         locals()['temp_dir_'+f'{genre}'] = []
-        temp_list = os.listdir(f'./audio/audio/{genre}/')
-        for i in tqdm(range(int(len(temp_list)))):
-            t  = np.load(f'./feature/melspec/{genre}/'+temp_list[i][:-3]+'npy')
-            t1 = np.load(f'./tempogram/{genre}/'+temp_list[i]+'.npy')
-            t2 = np.load(f'./tempogram/{genre}/'+'F_'+temp_list[i]+'.npy')
+        temp_list = os.listdir(f'./data/melspec/{genre}/')
+        for i in tqdm(range(int(len(temp_list)*dataset_ratio))):
+            t  = np.load(f'./data/melspec/{genre}/'+temp_list[i][:-3]+'npy')
+            t1 = np.load(f'./data/tempogram/{genre}/'+temp_list[i][:-4]+'.mp3'+'.npy')
+            t2 = np.load(f'./data/tempogram/{genre}/'+'F_'+temp_list[i][:-4]+'.mp3'+'.npy')
             t  = np.array(t, dtype='float32')
-            t  = np.array(t1, dtype='float32')
-            t  = np.array(t2, dtype='float32')
+            t1  = np.array(t1, dtype='float32')
+            t2  = np.array(t2, dtype='float32')
             t  = (t  - np.mean(t))/np.std(t)
             t1 = (t1 - np.mean(t1))/np.std(t1)
             t2 = (t2 - np.mean(t2))/np.std(t2)
-            if (not np.any(np.isnan(t))) and (not np.any(np.isnan(t1))) and (not np.any(np.isnan(t2))):
+            if (not np.any(np.isnan(t))) and (not np.any(np.isnan(t1))) and (not np.any(np.isnan(t2))) and (t.shape[0] == 5168):
                 locals()['temp_dir_'+f'{genre}'+'t'].append(temp_list[i])
                 locals()['temp_dir_'+f'{genre}'+'f'].append(temp_list[i])
                 locals()['temp_dir_'+f'{genre}'].append(temp_list[i])
         print("deal with {} ...".format(genre))
         for k in tqdm(range(len(locals()['temp_dir_'+f'{genre}'+'t']))):
             temp_1 = []
-            t = np.load(f'./tempogram/{genre}/'+locals()['temp_dir_'+f'{genre}'+'t'][k]+'.npy')
+            t = np.load(f'./data/tempogram/{genre}/'+locals()['temp_dir_'+f'{genre}'+'t'][k][:-4]+'.mp3'+'.npy')
             t = np.array(t, dtype='float32')
             t = (t - np.mean(t))/np.std(t)
             if not np.any(np.isnan(t)):
@@ -72,7 +60,7 @@ def joint_late_fusion_data():
                 locals()['data_'+f'{genre}'+'t'].append(temp_1)
         for k in tqdm(range(len(locals()['temp_dir_'+f'{genre}'+'f']))):
             temp_2 = []
-            t = np.load(f'./tempogram/{genre}/'+'F_'+locals()['temp_dir_'+f'{genre}'+'f'][k]+'.npy')
+            t = np.load(f'./data/tempogram/{genre}/'+'F_'+locals()['temp_dir_'+f'{genre}'+'f'][k][:-4]+'.mp3'+'.npy')
             t = np.array(t, dtype='float32')
             t = (t - np.mean(t))/np.std(t)
             if not np.any(np.isnan(t)):
@@ -81,7 +69,7 @@ def joint_late_fusion_data():
                 locals()['data_'+f'{genre}'+'f'].append(temp_2)
         for k in tqdm(range(len(locals()['temp_dir_'+f'{genre}']))):
             temp_3 = []
-            t = np.load(f'./feature/melspec/{genre}/'+locals()['temp_dir_'+f'{genre}'][k][:-3]+'npy')
+            t = np.load(f'./data/melspec/{genre}/'+locals()['temp_dir_'+f'{genre}'][k][:-4]+'.npy')
             t = np.array(t, dtype='float32')
             t = t.transpose()
             t = (t - np.mean(t))/np.std(t)
@@ -92,8 +80,10 @@ def joint_late_fusion_data():
         edm_melspec_1.append(locals()['data_'+f'{genre}'+'t'])
         edm_melspec_2.append(locals()['data_'+f'{genre}'+'f'])
         edm_melspec_3.append(locals()['data_'+f'{genre}'])
-    
-    SC_cnn_domain = 200
+    if data_type == 0:
+        SC_cnn_domain = 50
+    else :
+        SC_cnn_domain = 200
     X_train_1 = []
     Y_train_1 = []
     Z_train_1 = []
@@ -131,7 +121,10 @@ def joint_late_fusion_data():
     Y_test_1 = np.array(Y_test_1)
     Y_val_1 = np.array(Y_val_1)
     
-    SC_cnn_domain = 200
+    if data_type == 0:
+        SC_cnn_domain = 50
+    else :
+        SC_cnn_domain = 200
     X_train_2 = []
     X_test_2 = []
     X_val_2 = []
@@ -208,7 +201,7 @@ def joint_late_fusion_data():
     test_3          = torch.utils.data.TensorDataset(featuresTest_3, targetsTest_1)
     val_3           = torch.utils.data.TensorDataset(featuresVal_3, targetsVal_1)
     
-    return train_1, test_1, val_1, train_2, test_2, val_2, train_3, test_3, val_3
+    return train_1, test_1, val_1, train_2, test_2, val_2, train_3, test_3, val_3, Z_test_1, targetsTest_1
 
 def audio_to_mel_and_temp(audio):
     

@@ -11,8 +11,8 @@ Created on Tue May 18 15:44:25 2021
 Name       : model.py
 Function   : The EDM-subgenre-classfication model and weight initialization
 Model      : Short-chunk cnn + Resnet       ==> "ShortChunkCNN_Res"
-           Short-chunk cnn + Late-fusion  ==> "Joint_ShortChunkCNN_Res_late"
-           Short-chunk cnn + early-fusion ==> "Joint_ShortChunkCNN_Res_early"
+             Short-chunk cnn + Late-fusion  ==> "Joint_ShortChunkCNN_Res_late"
+             Short-chunk cnn + early-fusion ==> "Joint_ShortChunkCNN_Res_early"
            
 Parameters : n_channel ==> Number of input mel-spectrogram channels
              n_class   ==> Number of EDM-subgenres
@@ -98,7 +98,8 @@ class Joint_ShortChunkCNN_Res(nn.Module):
                 n_channels=128,
                 n_class=30):
         super(Joint_ShortChunkCNN_Res, self).__init__()
-
+        
+        self.name     = "late"
         # CNN
         self.layer1   = Res_2d(1, n_channels, stride=2)
         self.layer2   = Res_2d(n_channels, n_channels, stride=2)
@@ -199,7 +200,8 @@ class Joint_ShortChunkCNN_Res_early(nn.Module):
                 n_class=30,
                 n_frame = 50):
         super(Joint_ShortChunkCNN_Res_early, self).__init__()
-
+        
+        self.name     = "early"
         # CNN
         self.layer1   = Res_2d(1, n_channels, stride=2)
         self.layer2   = Res_2d(n_channels, n_channels, stride=2)
@@ -289,7 +291,8 @@ class ShortChunkCNN_Res(nn.Module):
                 n_channels=128,
                 n_class=30):
         super(ShortChunkCNN_Res, self).__init__()
-
+        
+        self.name     = "SCcnn"
         # CNN
         self.layer1 = Res_2d(1, n_channels, stride=2)
         self.layer2 = Res_2d(n_channels, n_channels, stride=2)
