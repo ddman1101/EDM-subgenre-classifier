@@ -16,8 +16,11 @@ You could run
 to make the part of installing dependencies.
 
 Then run
-  <pre><code>python3 main.py</code></pre>
+  <pre><code>python3 main.py [music files name] [pre-trained model]</code></pre>
 could predict the song's genre directly.
+For example:
+* music file name --> abcd.mp3
+* "pre-trained-model" just have only one pkl file --> pretrained.pkl
 
 Here are the steps to run the code:
 * Step 1 : Preparing the audio (mp3, wav) and put it under "./data/audio/"
