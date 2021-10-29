@@ -20,7 +20,7 @@ Then run
 could predict the song's genre directly.
 For example:
 * music file name --> abcd.mp3
-* "pre-trained-model" just have only one pkl file --> pretrained.pkl
+* "pre-trained-model" just have only one pkl file --> joint-model-all-2500.pkl
 
 Here are the steps to run the code:
 * Step 1 : Preparing the audio (mp3, wav) and put it under "./data/audio/"
